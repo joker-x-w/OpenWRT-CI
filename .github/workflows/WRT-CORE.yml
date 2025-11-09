@@ -74,7 +74,14 @@ jobs:
           sudo -E apt -yqq autoremove --purge
           sudo -E apt -yqq autoclean
           sudo -E apt -yqq clean
-          sudo -E apt -yqq install dos2unix python3-netifaces libfuse-dev
+          sudo -E apt -yqq install dos2unix python3-netifaces libfuse-dev wget
+          # 安装最新版 CMake（非 snap）
+          CMAKE_VER=3.27.8
+          wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VER/cmake-$CMAKE_VER-linux-x86_64.sh
+          chmod +x cmake-$CMAKE_VER-linux-x86_64.sh
+          sudo ./cmake-$CMAKE_VER-linux-x86_64.sh --skip-license --prefix=/usr/local
+          cmake --version
+          
           sudo bash -c 'bash <(curl -sL https://build-scripts.immortalwrt.org/init_build_environment.sh)'
           sudo -E systemctl daemon-reload
           sudo -E timedatectl set-timezone "Asia/Shanghai"
